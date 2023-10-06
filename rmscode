@@ -1,0 +1,42 @@
+RMS CODE
+Const int sensorIn = A0;
+int mVperAmp = 185;
+double Voltage = 0;
+double VRMS = 0;
+double AmpsRMS = 0;
+void setup()
+{
+Serial.begin(9600);
+}
+Void loop(){
+Voltage = getVPP();
+VRMS = (Voltage/2.0) *0.707; //root 2 is 0.707
+AmpsRMS = (VRMS * 1000)/mVperAmp;
+Serial.print(AmpsRMS);
+Serial.println(“AmpsRMS”);
+}
+Float getVPP()
+{
+float result;
+float diff;
+int readValue;
+int maxValue = 0;.
+int minValue = 1024;
+uint32_t start_time = millis();
+while((millis()-start_time) < 3000)
+{
+readValue = analogRead(sensorIn);
+if (readValue > maxValue)
+{
+maxValue = readValue;
+}
+if(readValue < minValue)
+{
+/*record the minimum sensor value*/
+
+minValue = readValue;
+}}
+diff = ( maxValue – minValue );
+result = ( diff * 5.0 )/1024.0;
+return result;
+}
