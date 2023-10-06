@@ -1,0 +1,31 @@
+TRMS CODE
+#include <Filters.h>
+int decimalPrecision=3;
+float testFrequency = 50;
+float windowLength = 20.0
+int sensorValue = 0;
+float intercept = -0.1129;
+float slope = 0.0120;
+float current_amps=0;
+unsigned long printPeriod = 1000;
+unsigned long previousMillis = 0;
+void setup() {
+Serial.begin( 9600 );
+}
+void loop() {
+RunningStatistics inputStats;
+inputStats.setWindowSecs( windowLength );
+while( true )
+{
+sensorValue = analogRead(A0);
+inputStats.input(sensorValue);
+if((unsigned long)(millis() - previousMillis) >= printPeriod) {
+previousMillis = millis(); // update time
+Serial.print( "\n" );
+current_amps = intercept + slope * inputStats.sigma();
+Serial.print( "\tAC Amperes are: " );
+Serial.println(current_amps,decimalPrecision);
+}
+}
+delay(2000);
+}
